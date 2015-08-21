@@ -1,0 +1,23 @@
+//
+//  PrefixHeader.pch
+//  HaoDou
+//
+//  Created by Lu Ming on 15-1-10.
+//  Copyright (c) 2015年 Lu Ming. All rights reserved.
+//
+
+#ifndef HaoDou_PrefixHeader_pch
+#define HaoDou_PrefixHeader_pch
+
+//定义全局绿色
+#define kGreen [UIColor colorWithRed:102/255.0f green:153/255.0f blue:0.0f alpha:1]
+#define  isLight  0
+//定义屏幕size
+#define kSize [UIScreen mainScreen].bounds.size
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif
+

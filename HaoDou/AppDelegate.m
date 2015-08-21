@@ -7,6 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import "HomeViewController.h"
+#import "MainViewController.h"
+#import <ShareSDK/ShareSDK.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
+#import "WeiboApi.h"
+#import "WeiboSDK.h"
 
 @interface AppDelegate ()
 
@@ -16,9 +24,45 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    MainViewController *main = [[MainViewController alloc] init];
+    self.window.rootViewController = main;
+    
+    [self.window makeKeyAndVisible];
+    //
+    [ShareSDK registerApp:@"59ad7e4e09ad"];//字符串api20为您的ShareSDK的AppKey
+    //添加新浪微博应用 注册网址 http://open.weibo.com
+    [ShareSDK connectSinaWeiboWithAppKey:@"2845751892"
+                               appSecret:@"df9aa8f5a611c1a0a5de12c4d6ba29ef"
+                             redirectUri:@"http://www.weipaiku.com"];
+    
+    //qq
+    [ShareSDK connectQQWithQZoneAppKey:@"1103532993" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+
+    [ShareSDK connectQZoneWithAppKey:@"1103532993" appSecret:@"zuSkFwTiOybZICa3" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
     return YES;
 }
+
+//添加两个回调方法,return的必须要ShareSDK的方法
+- (BOOL)application:(UIApplication *)application
+      handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url
+                        wxDelegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    return [ShareSDK handleOpenURL:url
+                 sourceApplication:sourceApplication
+                        annotation:annotation
+                        wxDelegate:self];
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
